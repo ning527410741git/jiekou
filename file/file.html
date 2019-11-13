@@ -15,7 +15,7 @@
 
 	<input type="file" name="file_tag" id="file_tag">
 	<input type="button" value="上传" id="upload_btn">
-
+	<div id="show_img"></div>
 </body>
 </html>
 
@@ -32,7 +32,7 @@
 			upload(file);
 
 			function upload(file){
-				var every_size=1024//每页的数据
+				var every_size=1024*10//每页的数据
 				var chunks=Math.ceil(file.size/every_size)//总页码
 				var filename=file.name+"_chunk";
 				var chunk=window.localStorage.getItem(filename) || 1;//当前页
@@ -66,6 +66,12 @@
 								per = 100 + "%";
 								$("#per").css({width:per});	
 								$("#per_num").text(per);
+								//图片
+								// var img="<img src='"+res.data.path+"'>"
+								// $("#show_img").append(img);
+								// 视频
+								var video="<video src='"+res.data.path+"' controls='controls'></video>";
+								 	$("#show_img").append(video);
 							}else{
 								chunk=chunk+1;
 								per = per + "%";

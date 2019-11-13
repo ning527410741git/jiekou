@@ -1,12 +1,39 @@
 <?php 
-	$arr=$_FILES;
-	$tmpName=$arr['data']['tmp_name'];//data里的k值
-	$fileName="11.jpg";//自己定义的文件名称
-	$content=file_get_contents($tmpName);//将一个文件转到字符串
-	file_put_contents($fileName,$content,FILE_APPEND);//将一个字符串转到文件
-	$arrReturn=array(
-			"error"=>0
-		);
-	echo json_encode($arrReturn);
+	 $arr=$_FILES;
+    //接所有值
+    $info =$_REQUEST;
+    $ext=explode('.',$info['filename'])[1];
+    $fileName=$info['filename'];
+    $baseDir="./".date('Y/m/d/',time());
+      //判断有没有这个文件 如果没有的情况下 新建一个文件夹
+        if(!is_dir($baseDir)){
+          mkdir($baseDir,0,777);
+      }
+    //
+    $filePath=$baseDir.$fileName;
+    $tmpName=$arr['data']['tmp_name'];
+    //读取内容
+    $content=file_get_contents($tmpName);
+    file_put_contents($filePath,$content,FILE_APPEND);
+    //去除左边的符号
+    $filePath=ltrim($filePath,".");
+    $filePath="/file/".$filePath;
+    $arrReturn=array(
+        "error"=>0,
+        "data"=>array(
+            'path'=>$filePath,
+        ),
+    );
+    echo json_encode($arrReturn);
+
+
+	// $tmpName=$arr['data']['tmp_name'];//data里的k值
+	// $fileName="11.jpg";//自己定义的文件名称
+	// $content=file_get_contents($tmpName);//将一个文件转到字符串
+	// file_put_contents($fileName,$content,FILE_APPEND);//将一个字符串转到文件
+	// $arrReturn=array(
+	// 		"error"=>0
+	// 	);
+	// echo json_encode($arrReturn);
 
  ?>
